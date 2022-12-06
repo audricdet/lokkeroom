@@ -4,6 +4,7 @@ import pkg from 'pg';
 
 const {Client} = pkg;
 
+
 const client = new Client({
     user: 'audricdetrez',
     host: 'localhost',
@@ -19,3 +20,5 @@ client.connect((err) => {
         console.log('connected')
     }
 });
+
+export default client;

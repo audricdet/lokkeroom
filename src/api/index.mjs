@@ -4,9 +4,14 @@ const router = express.Router()
 
 // Home
 
-router.get( '/' , function(req, res) {
-    res.json(['HOME'])
-})
+router.get("/", (request, response) => {
+    response.json({ info: "Node.js, Express, and Postgres API" });
+});
+
+router.post("/", (req, res) => {
+    console.log(req.body);
+    console.log(res);
+});
 
 /*
 // Register 

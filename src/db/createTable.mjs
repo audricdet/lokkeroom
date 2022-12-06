@@ -28,9 +28,10 @@ client.connect((err) => {
 
 const createTableUser = `
 CREATE TABLE IF NOT EXISTS "users" (
-    "id" SERIAL,
+    "id" SERIAL PRIMARY KEY NOT NULL,
     "email" VARCHAR(50) NOT NULL,
-    "password" VARCHAR(50) NOT NULL 
+    "password" VARCHAR(50) NOT NULL,
+    UNIQUE (email)
 );`
 
 client.query(createTableUser, (err, res) => {
@@ -40,8 +41,11 @@ client.query(createTableUser, (err, res) => {
 
 const createTableLobby = `
 CREATE TABLE IF NOT EXISTS "lobby" (
-    "id" SERIAL,
-    "name" VARCHAR(50)
+    "id" SERIAL PRIMARY KEY NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
+    "user_id" INT,
+    FOREIGN KEY(user_id)
+    REFERENCES users(id)
 );`
 
 client.query(createTableLobby, (err, res) => {
@@ -51,8 +55,14 @@ client.query(createTableLobby, (err, res) => {
 
 const createTableMessage = `
 CREATE TABLE IF NOT EXISTS "messages" (
-    "id" SERIAL, 
-    "message" VARCHAR(180)
+    "id" SERIAL PRIMARY KEY NOT NULL, 
+    "message" VARCHAR(180) NOT NULL,
+    "user_id" INT,
+    "lobby_id" INT,
+    FOREIGN KEY(user_id)
+    REFERENCES users(id),
+    FOREIGN KEY(lobby_id)
+    REFERENCES lobby(id)
 );`
 
 client.query(createTableMessage, (err, res) => {
@@ -60,3 +70,19 @@ client.query(createTableMessage, (err, res) => {
     console.log(res)
 })
 
+
+const createUsersPerlobby = `
+CREATE TABLE IF NOT EXISTS "users_per_lobby" (
+    "id" SERIAL NOT NULL,
+    "user_id" INT,
+    "lobby_id" INT,
+    FOREIGN KEY(user_id)
+    REFERENCES users(id),
+    FOREIGN KEY(lobby_id)
+    REFERENCES lobby(id)
+);`
+
+client.query(createUsersPerlobby, (err, res) => {
+    if (err) throw err
+    console.log(res)
+})
