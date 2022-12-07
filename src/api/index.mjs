@@ -1,6 +1,39 @@
 import express from 'express'
 
+import dotenv from 'dotenv'
+import pkg from 'pg';
+
+const {Client} = pkg;
+
 const router = express.Router()
+
+const client = new Client({
+    user: 'lokkeroom_admin',
+    host: 'localhost',
+    database: 'lokkeroom_db',
+    password: process.env.DATABASE_PWD,
+    port: 5432,
+});
+
+
+// Test
+
+router.get('/test', function (req, response) {
+    // connect to test table and retrieve all of its content
+    client.connect((err) => {
+        if (err) {
+        console.log('connection error', err.stack)
+        } else {
+            console.log('connected')
+        }
+    })
+
+    client.query('SELECT * FROM tests', (err, res) => {
+        if (err) throw err
+        response.send({connection: 'successful', connection_time: Date.now(), response: res})
+        client.end()
+    })
+})
 
 // Home
 

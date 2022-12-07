@@ -1,14 +1,13 @@
 import dotenv from 'dotenv'
-
 import pkg from 'pg';
 
 const {Client} = pkg;
 
 
 const client = new Client({
-    user: 'audricdetrez',
+    user: 'lokkeroom_admin',
     host: 'localhost',
-    database: 'lokkeroom',
+    database: 'lokkeroom_db',
     password: process.env.DATABASE_PWD,
     port: 5432,
 });
